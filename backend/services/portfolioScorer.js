@@ -17,8 +17,9 @@ export const scorePortfolio = async (enhancedData) => {
   }
 
   try {
-    console.log('Using Gemini model: gemini-pro');
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    console.log('Using Gemini SDK latest');
+    console.log('Using Gemini model: gemini-1.5-flash');
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
     const prompt = `You are a senior technical recruiter and portfolio reviewer. Evaluate the following portfolio data and provide a detailed score.
 
