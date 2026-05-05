@@ -16,7 +16,7 @@ export const enhanceContent = async (structuredData) => {
   }
 
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const prompt = `You are a professional resume writer and career coach. Your job is to enhance the following resume data to make it more impressive, professional, and recruiter-friendly.
 
