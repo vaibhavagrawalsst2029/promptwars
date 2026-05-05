@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 import connectDB from './config/db.js';
 import errorHandler from './middleware/errorHandler.js';
@@ -50,6 +51,33 @@ app.use('/api/score', scoreRoutes);
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'ResumeForge AI API is running 🚀' });
+});
+
+// Debug models route
+app.get('/api/debug/models', async (req, res) => {
+  try {
+    const genAI = process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your_key_here'
+      ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+      : null;
+
+    if (!genAI) {
+      return res.status(500).json({ error: 'GEMINI_API_KEY not configured properly' });
+    }
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${genAI.apiKey}`);
+    if (!response.ok) {
+      throw new Error(`API returned ${response.status} ${response.statusText}`);
+    }
+    const data = await response.json();
+    const modelNames = data.models.map(m => m.name);
+    
+    console.log('Available Gemini Models:', modelNames);
+    
+    res.json({ models: modelNames });
+  } catch (error) {
+    console.error('Error fetching models:', error.message);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Error handler
