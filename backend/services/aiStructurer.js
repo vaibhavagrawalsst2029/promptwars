@@ -18,8 +18,8 @@ export const structureResume = async (rawText) => {
   }
 
   try {
-    console.log('Using Gemini model: gemini-1.5-flash');
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    console.log('Using Gemini model: gemini-1.5-flash-latest');
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
 
     const prompt = `You are an expert resume parser. Analyze the following resume text and extract structured information.
 
