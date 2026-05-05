@@ -1,0 +1,28 @@
+{
+  "name": "resumeforge-ai-backend",
+  "version": "1.0.0",
+  "description": "ResumeForge AI - Backend API Server",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "resume",
+    "ai",
+    "portfolio"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongodb-memory-server": "^11.1.0",
+    "mongoose": "^9.6.1",
+    "multer": "^2.1.1",
+    "pdf-parse": "^1.1.1",
+    "uuid": "^14.0.0"
+  }
+}
