@@ -12,8 +12,7 @@ const genAI = process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your
  */
 export const scorePortfolio = async (enhancedData) => {
   if (!genAI) {
-    console.log('⚠️ No Gemini API key. Using mock score.');
-    return getMockScore(enhancedData);
+    throw new Error('GEMINI_API_KEY is not configured on the server.');
   }
 
   try {
@@ -58,7 +57,7 @@ Return ONLY valid JSON in this exact format:
     return JSON.parse(cleanedText);
   } catch (error) {
     console.error('❌ AI scoring failed:', error.message);
-    return getMockScore(enhancedData);
+    throw new Error(`AI scoring failed: ${error.message}`);
   }
 };
 

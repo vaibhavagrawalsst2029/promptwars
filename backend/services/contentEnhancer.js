@@ -12,8 +12,7 @@ const genAI = process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your
  */
 export const enhanceContent = async (structuredData) => {
   if (!genAI) {
-    console.log('⚠️ No Gemini API key. Returning original data as enhanced.');
-    return applyBasicEnhancements(structuredData);
+    throw new Error('GEMINI_API_KEY is not configured on the server.');
   }
 
   try {
@@ -49,7 +48,7 @@ Return the SAME JSON structure with enhanced content. Return ONLY valid JSON, no
     return enhanced;
   } catch (error) {
     console.error('❌ AI enhancement failed:', error.message);
-    return applyBasicEnhancements(structuredData);
+    throw new Error(`AI enhancement failed: ${error.message}`);
   }
 };
 

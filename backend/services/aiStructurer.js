@@ -13,8 +13,7 @@ const genAI = process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'your
  */
 export const structureResume = async (rawText) => {
   if (!genAI) {
-    console.log('⚠️ No Gemini API key found. Using mock structured data.');
-    return getMockStructuredData();
+    throw new Error('GEMINI_API_KEY is not configured on the server.');
   }
 
   try {
@@ -78,8 +77,7 @@ Return ONLY valid JSON, no markdown formatting, no code blocks, just the raw JSO
     return structured;
   } catch (error) {
     console.error('❌ AI structuring failed:', error.message);
-    console.log('⚠️ Falling back to mock data.');
-    return getMockStructuredData();
+    throw new Error(`AI processing failed: ${error.message}`);
   }
 };
 
