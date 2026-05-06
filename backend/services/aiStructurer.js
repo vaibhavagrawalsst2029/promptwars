@@ -19,8 +19,6 @@ export const structureResume = async (rawText) => {
 
   try {
     console.log('Using Gemini SDK latest');
-    console.log('Using Gemini model: gemini-flash-latest');
-    const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
     const prompt = `You are an expert resume parser. Analyze the following resume text and extract structured information.
 
@@ -67,7 +65,16 @@ ${rawText}
 
 Return ONLY valid JSON, no markdown formatting, no code blocks, just the raw JSON object.`;
 
-    const result = await model.generateContent(prompt);
+    let result;
+    try {
+      console.log('Using Gemini model: gemini-2.0-flash-lite');
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
+      result = await model.generateContent(prompt);
+    } catch (modelError) {
+      console.log('gemini-2.0-flash-lite failed, falling back to gemini-2.0-flash');
+      const fallbackModel = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      result = await fallbackModel.generateContent(prompt);
+    }
     const responseText = result.response.text();
 
     // Clean up response - remove markdown code blocks if present

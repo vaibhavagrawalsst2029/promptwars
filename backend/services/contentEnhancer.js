@@ -18,8 +18,6 @@ export const enhanceContent = async (structuredData) => {
 
   try {
     console.log('Using Gemini SDK latest');
-    console.log('Using Gemini model: gemini-flash-latest');
-    const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
     const prompt = `You are a professional resume writer and career coach. Your job is to enhance the following resume data to make it more impressive, professional, and recruiter-friendly.
 
@@ -39,7 +37,16 @@ ${JSON.stringify(structuredData, null, 2)}
 
 Return the SAME JSON structure with enhanced content. Return ONLY valid JSON, no markdown formatting, no code blocks.`;
 
-    const result = await model.generateContent(prompt);
+    let result;
+    try {
+      console.log('Using Gemini model: gemini-2.0-flash-lite');
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
+      result = await model.generateContent(prompt);
+    } catch (modelError) {
+      console.log('gemini-2.0-flash-lite failed, falling back to gemini-2.0-flash');
+      const fallbackModel = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      result = await fallbackModel.generateContent(prompt);
+    }
     const responseText = result.response.text();
 
     const cleanedText = responseText

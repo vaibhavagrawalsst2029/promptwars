@@ -18,8 +18,6 @@ export const scorePortfolio = async (enhancedData) => {
 
   try {
     console.log('Using Gemini SDK latest');
-    console.log('Using Gemini model: gemini-flash-latest');
-    const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
     const prompt = `You are a senior technical recruiter and portfolio reviewer. Evaluate the following portfolio data and provide a detailed score.
 
@@ -49,7 +47,16 @@ Return ONLY valid JSON in this exact format:
   "strengths": ["strength1", "strength2"]
 }`;
 
-    const result = await model.generateContent(prompt);
+    let result;
+    try {
+      console.log('Using Gemini model: gemini-2.0-flash-lite');
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
+      result = await model.generateContent(prompt);
+    } catch (modelError) {
+      console.log('gemini-2.0-flash-lite failed, falling back to gemini-2.0-flash');
+      const fallbackModel = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      result = await fallbackModel.generateContent(prompt);
+    }
     const responseText = result.response.text();
 
     const cleanedText = responseText
