@@ -47,16 +47,9 @@ Return ONLY valid JSON in this exact format:
   "strengths": ["strength1", "strength2"]
 }`;
 
-    let result;
-    try {
-      console.log('Using Gemini model: gemini-2.0-flash-lite');
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
-      result = await model.generateContent(prompt);
-    } catch (modelError) {
-      console.log('gemini-2.0-flash-lite failed, falling back to gemini-2.0-flash');
-      const fallbackModel = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-      result = await fallbackModel.generateContent(prompt);
-    }
+    console.log('Using Gemini model: gemini-2.0-flash-lite');
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
+    const result = await model.generateContent(prompt);
     const responseText = result.response.text();
 
     const cleanedText = responseText

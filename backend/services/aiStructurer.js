@@ -65,16 +65,9 @@ ${rawText}
 
 Return ONLY valid JSON, no markdown formatting, no code blocks, just the raw JSON object.`;
 
-    let result;
-    try {
-      console.log('Using Gemini model: gemini-2.0-flash-lite');
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
-      result = await model.generateContent(prompt);
-    } catch (modelError) {
-      console.log('gemini-2.0-flash-lite failed, falling back to gemini-2.0-flash');
-      const fallbackModel = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-      result = await fallbackModel.generateContent(prompt);
-    }
+    console.log('Using Gemini model: gemini-2.0-flash-lite');
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
+    const result = await model.generateContent(prompt);
     const responseText = result.response.text();
 
     // Clean up response - remove markdown code blocks if present
